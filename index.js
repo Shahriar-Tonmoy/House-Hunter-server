@@ -57,10 +57,22 @@ async function run() {
         res.send(result);
       })
 
+      app.get('/houses', async(req, res) =>{
+
+        let query = {};
+        const cursor = housesCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+
+      }
+
+      )
+    
+
     //get api for all data
    
 
-    //post api for all data
+    //post api
     app.post("/users", async (req, res) => {
         console.log(req.body);
         const newUser = req.body;
