@@ -39,12 +39,24 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    //get api for all data
+    //get api for some data
     app.get('/users', async (req, res) =>{
-        const cursor = usersCollection.find();
+        
+        console.log(req.query.email, req.query.password);
+        let query = {};
+        if(req.query?.email && req.query.password){
+            query = {email: req.query.email,
+                password: req.query.password
+            }
+        }
+
+        const cursor = usersCollection.find(query);
         const result = await cursor.toArray();
         res.send(result);
       })
+
+    //get api for all data
+   
 
     //post api for all data
     app.post("/users", async (req, res) => {
