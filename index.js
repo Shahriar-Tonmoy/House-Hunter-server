@@ -34,6 +34,8 @@ const client = new MongoClient(uri, {
 
 const database = client.db("HouseHunterDB");
 const usersCollection = database.collection("users");
+const housesCollection = database.collection("houses");
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -63,6 +65,14 @@ async function run() {
         console.log(req.body);
         const newUser = req.body;
         const result = await usersCollection.insertOne(newUser);
+        res.send(result);
+        console.log(result);       
+    });
+
+    app.post("/houses", async (req, res) => {
+        console.log(req.body);
+        const newHouse = req.body;
+        const result = await housesCollection.insertOne(newHouse);
         res.send(result);
         console.log(result);       
     });
