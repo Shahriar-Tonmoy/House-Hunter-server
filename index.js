@@ -22,7 +22,7 @@ app.use(cors());
   //pw89YcXJbWFeyVWU
 
 
-  const uri = "mongodb+srv://HouseHunter:pw89YcXJbWFeyVWU@cluster0.nztpc23.mongodb.net/?retryWrites=true&w=majority";
+  const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@cluster0.nztpc23.mongodb.net/?retryWrites=true&w=majority`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -39,7 +39,7 @@ const housesCollection = database.collection("houses");
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    //await client.connect();
 
     //get api for some data
     app.get('/users', async (req, res) =>{
@@ -60,6 +60,12 @@ async function run() {
       app.get('/houses', async(req, res) =>{
 
         let query = {};
+
+        if(req.query?.city){
+            query = {city: req.query.city
+            }
+        }
+
         const cursor = housesCollection.find(query);
         const result = await cursor.toArray();
         res.send(result);
@@ -91,7 +97,7 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    //await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
